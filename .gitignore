@@ -1,0 +1,16 @@
+.DS_Store
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+.ipynb_checkpoints/
+Output_gpsgridder/
+nbtk/Output_gpsgridder/
+*.nc
+tempgps.txt
+misfitfile.txt
+eigenvalues_info.txt

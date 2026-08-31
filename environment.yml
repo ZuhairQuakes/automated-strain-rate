@@ -1,0 +1,13 @@
+name: gnss-earthquake
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - jupyterlab
+  - cartopy
+  - matplotlib
+  - numpy
+  - pandas
+  - xarray
+  - netcdf4
+  - gmt
