@@ -1,56 +1,134 @@
-# Automated crustal strain-rate assessment from GNSS velocities
+# Automated Strain Rate
 
-[![Repository quality](https://github.com/ZuhairQuakes/GNSS-Earthquake/actions/workflows/repository-quality.yml/badge.svg)](https://github.com/ZuhairQuakes/GNSS-Earthquake/actions/workflows/repository-quality.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Quality](https://github.com/ZuhairQuakes/automated-strain-rate/actions/workflows/repository-quality.yml/badge.svg)](https://github.com/ZuhairQuakes/automated-strain-rate/actions/workflows/repository-quality.yml)
+[![MIT licence](https://img.shields.io/badge/licence-MIT-2ea44f.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776ab.svg)](https://www.python.org/downloads/)
 
-A reproducible notebook workflow for interpolating sparse GNSS velocity observations and calculating continuous crustal strain-rate fields. The example data cover Myanmar and support a grid-resolution sensitivity analysis.
+An open-source Python toolkit for turning horizontal GNSS velocities into
+reproducible two-dimensional crustal strain-rate fields. The tested numerical
+core derives strain tensors from regular velocity grids; an optional GMT
+`gpsgridder` pipeline automates interpolation from station observations.
 
-![Strain-rate comparison](images/mynamar.png)
+![Myanmar grid-resolution comparison](images/mynamar.png)
 
-## Method
+## Capabilities
 
-1. Read east, north, and vertical station velocities with their uncertainties.
-2. Call GMT `gpsgridder` to interpolate the horizontal velocity field.
-3. Load the resulting NetCDF grids with xarray.
-4. Calculate spatial velocity gradients and derived strain quantities, including maximum shear, dilatation, and the second invariant.
-5. Repeat across grid intervals and compare the mapped results.
+- Validate whitespace-delimited GNSS velocity catalogues.
+- Interpolate east and north velocities with GMT `gpsgridder` using a safe,
+  recorded argument vector.
+- Derive normal strain, tensor shear, rotation, dilatation, principal strain
+  rates, maximum shear, and tensor magnitude.
+- Write analysis-ready NetCDF with coordinates, units, method, and interpolation
+  parameters in the metadata.
+- Test the numerical implementation against an affine velocity field with a
+  known analytical strain tensor.
+- Inspect data or derive strain from existing GMT grids without rerunning the
+  interpolation.
 
-## Repository map
+Read [`SCIENTIFIC_METHOD.md`](SCIENTIFIC_METHOD.md) before interpreting results.
+This is research software, not an operational hazard assessment.
 
-| Path | Purpose |
-| --- | --- |
-| [`nbtk/strain_rates_compute.ipynb`](nbtk/strain_rates_compute.ipynb) | complete interpolation and strain-rate workflow |
-| [`data/mymr_vel_space_ITRF2014.txt`](data/mymr_vel_space_ITRF2014.txt) | tracked example GNSS velocity field |
-| [`images/`](images/) | study-area, velocity, and result figures |
-| [`environment.yml`](environment.yml) | Python, geospatial, NetCDF, Jupyter, and GMT environment |
-| [`tools/validate_repository.py`](tools/validate_repository.py) | dependency-free structural validation |
-
-## Reproduce the analysis
+## Install
 
 ```bash
-git clone https://github.com/ZuhairQuakes/GNSS-Earthquake.git
-cd GNSS-Earthquake
-conda env create -f environment.yml
-conda activate gnss-earthquake
-python tools/validate_repository.py
-gmt --version
-jupyter lab nbtk/strain_rates_compute.ipynb
+git clone https://github.com/ZuhairQuakes/automated-strain-rate.git
+cd automated-strain-rate
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install .
 ```
 
-Launch Jupyter from the repository root. The notebook reads `data/mymr_vel_space_ITRF2014.txt` using a repository-relative path and writes generated NetCDF grids to `Output_gpsgridder/`. Generated grids and GMT temporary files are ignored by Git.
+Python 3.10 or newer is required. GMT is only required for the end-to-end
+interpolation command. Install the complete Conda environment with:
+
+```bash
+conda env create -f environment.yml
+conda activate automated-strain-rate
+```
+
+## Command line
+
+Validate and summarize the bundled station field:
+
+```bash
+strain-rate inspect data/mymr_vel_space_ITRF2014.txt
+```
+
+Run GMT interpolation and derive a NetCDF strain-rate field:
+
+```bash
+strain-rate compute data/mymr_vel_space_ITRF2014.txt outputs/grid-03 \
+  --region 94.5 98 16 28 \
+  --spacing 0.3 \
+  --poisson 0.5 \
+  --fudge-factor 0.01 \
+  --eigenvalue-cutoff 0.0001
+```
+
+Derive strain from existing GMT grids without invoking GMT:
+
+```bash
+strain-rate derive velocity_u.nc velocity_v.nc strain-rate.nc
+```
+
+Use `strain-rate --help` for all options.
+
+## Python API
+
+```python
+import numpy as np
+from automated_strain_rate import strain_from_regular_grid
+
+longitude = np.linspace(95, 98, 31)
+latitude = np.linspace(16, 28, 121)
+east_velocity = np.zeros((latitude.size, longitude.size))  # mm/yr
+north_velocity = np.zeros_like(east_velocity)
+
+strain = strain_from_regular_grid(
+    east_velocity,
+    north_velocity,
+    longitude,
+    latitude,
+    velocity_unit="mm/yr",
+)
+strain.to_netcdf("strain-rate.nc")
+```
 
 ## Input format
 
-The whitespace-delimited example file is read with these columns:
+The station reader expects:
 
 ```text
 Lon Lat Ve Vn Vu Se Sn Su Name
 ```
 
-Longitude and latitude are decimal degrees; velocity and uncertainty units must remain consistent throughout a run. For a new velocity field, document its reference frame, epoch, units, processing source, and station-selection criteria.
+Longitude and latitude are decimal degrees. Velocity units are selected by the
+caller and must be consistent. Record reference frame, epoch, processing
+source, uncertainty convention, station selection, and data licence for every
+study. See [`data/Readme.md`](data/Readme.md).
 
-## Reproducibility notes
+## Repository map
 
-Record the Git commit, GMT version, grid interval, interpolation parameters, bounding box, and environment export with each result. Because spatial derivatives amplify interpolation choices, comparisons should use the same input stations and map extent.
+| Path | Purpose |
+| --- | --- |
+| [`src/automated_strain_rate/`](src/automated_strain_rate/) | tested library, GMT adapter, I/O, and CLI |
+| [`tests/`](tests/) | analytical, I/O, GMT-command, and CLI tests |
+| [`nbtk/strain_rates_compute.ipynb`](nbtk/strain_rates_compute.ipynb) | historical exploratory workflow |
+| [`SCIENTIFIC_METHOD.md`](SCIENTIFIC_METHOD.md) | equations, conventions, assumptions, and limitations |
+| [`data/`](data/) | example station velocity field and provenance guidance |
+| [`environment.yml`](environment.yml) | full Python, notebook, NetCDF, mapping, and GMT environment |
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for change and review expectations. This project is available under the [MIT License](LICENSE).
+## Contribute
+
+```bash
+python -m pip install -e ".[dev,notebook]"
+ruff check .
+pytest
+python tools/validate_repository.py
+python -m build
+```
+
+Scientific contributions are welcome. Read [`CONTRIBUTING.md`](CONTRIBUTING.md),
+follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report security issues via
+[`SECURITY.md`](SECURITY.md). Software is licensed under the [MIT License](LICENSE);
+research users can cite the project with [`CITATION.cff`](CITATION.cff).

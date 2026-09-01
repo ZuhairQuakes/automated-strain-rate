@@ -7,7 +7,11 @@ __pycache__/
 .ruff_cache/
 .venv/
 venv/
+*.egg-info/
+build/
+dist/
 .ipynb_checkpoints/
+outputs/
 Output_gpsgridder/
 nbtk/Output_gpsgridder/
 *.nc

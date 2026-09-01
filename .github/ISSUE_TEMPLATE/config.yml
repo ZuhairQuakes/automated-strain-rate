@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage and support
+    url: https://github.com/ZuhairQuakes/automated-strain-rate/discussions
+    about: Ask questions and discuss scientific applications.

@@ -1,0 +1,23 @@
+name: Scientific proposal
+description: Propose a method, validation case, dataset, or uncertainty treatment.
+title: "[Science]: "
+labels: [enhancement, science]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Scientific question
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Method, assumptions, units, and conventions
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: References and validation plan
+    validations:
+      required: true

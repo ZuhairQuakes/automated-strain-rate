@@ -1,13 +1,9 @@
-name: gnss-earthquake
+name: automated-strain-rate
 channels:
   - conda-forge
 dependencies:
   - python=3.11
-  - jupyterlab
-  - cartopy
-  - matplotlib
-  - numpy
-  - pandas
-  - xarray
-  - netcdf4
-  - gmt
+  - gmt>=6.5
+  - pip
+  - pip:
+      - -e ".[dev,notebook]"

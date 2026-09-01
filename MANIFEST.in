@@ -1,0 +1,5 @@
+include CHANGELOG.md
+include CITATION.cff
+include LICENSE
+include SCIENTIFIC_METHOD.md
+include README.md

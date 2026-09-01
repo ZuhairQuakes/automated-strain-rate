@@ -9,10 +9,31 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote
 
-
 ROOT = Path(__file__).resolve().parents[1]
-SKIP_DIRS = {".git", ".ipynb_checkpoints", ".venv", "node_modules", "venv"}
+SKIP_DIRS = {
+    ".git",
+    ".ipynb_checkpoints",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+}
 MARKDOWN_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
+REQUIRED_PROJECT_FILES = {
+    "CHANGELOG.md",
+    "CITATION.cff",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "README.md",
+    "SCIENTIFIC_METHOD.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "pyproject.toml",
+}
 
 
 def files_with_suffix(suffix: str):
@@ -67,8 +88,20 @@ def validate_markdown_links(errors: list[str]) -> int:
     return count
 
 
+def validate_project_structure(errors: list[str]) -> None:
+    for relative_path in sorted(REQUIRED_PROJECT_FILES):
+        if not (ROOT / relative_path).is_file():
+            errors.append(f"missing required project file: {relative_path}")
+    package_init = ROOT / "src/automated_strain_rate/__init__.py"
+    if not package_init.is_file():
+        errors.append("missing Python package: src/automated_strain_rate")
+    elif '__version__ = "0.1.0"' not in package_init.read_text(encoding="utf-8"):
+        errors.append("package version is not synchronized with the 0.1.0 release")
+
+
 def main() -> int:
     errors: list[str] = []
+    validate_project_structure(errors)
     python_count = validate_python(errors)
     json_count, notebook_count = validate_json(errors)
     markdown_count = validate_markdown_links(errors)

@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use Automated Strain Rate in research, please cite the software."
+title: "Automated Strain Rate"
+type: software
+authors:
+  - family-names: "Zuhair"
+    given-names: "Mohd"
+version: 0.1.0
+date-released: 2026-09-01
+license: MIT
+repository-code: "https://github.com/ZuhairQuakes/automated-strain-rate"
+url: "https://github.com/ZuhairQuakes/automated-strain-rate"
+keywords:
+  - crustal deformation
+  - geodesy
+  - GNSS
+  - natural hazards
+  - strain rate

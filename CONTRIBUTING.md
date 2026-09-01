@@ -1,20 +1,46 @@
 # Contributing
 
-Thank you for helping improve this research repository.
+Contributions to the scientific methods, validation cases, documentation, and
+software are welcome.
 
-## Workflow
+## Development workflow
 
-1. Create the Conda environment from [`environment.yml`](environment.yml).
-2. Install GMT separately and confirm that `gmt --version` works.
-3. Keep the tracked source velocity field immutable; add a new, documented file for a different dataset.
-4. Do not commit NetCDF grids or temporary `gpsgridder` files. These are reproducible outputs and are ignored by Git.
+1. Fork the repository and create a focused branch.
+2. Create the Conda environment or install `.[dev,notebook]`.
+3. Add tests for numerical or behavioural changes.
+4. Run `ruff check .`, `pytest`, `python tools/validate_repository.py`, and
+   `python -m build`.
+5. Update `SCIENTIFIC_METHOD.md` and `CHANGELOG.md` when behaviour changes.
+6. Open a pull request using the repository template.
 
-Run the structural checks before opening a pull request:
+## Scientific contributions
+
+A method change must state the physical and statistical assumptions, tensor
+and sign conventions, coordinate system, units, expected validity domain, and
+supporting literature. Include an analytical, synthetic, or peer-reviewed
+benchmark with tolerances. Parameter sweeps should report all tested settings,
+not only the preferred output.
+
+New observational data must document provider, stable identifier or URL,
+access date, reference frame, epoch, processing method, uncertainty definition,
+station selection, transformations, and reuse licence. Do not assume the MIT
+software licence covers third-party data.
+
+## Notebook policy
+
+The original notebook is retained as a historical research artifact. New
+capabilities belong in the tested package first; notebooks should call that
+API. Strip execution state before committing:
 
 ```bash
-python tools/validate_repository.py
+python tools/strip_notebook_outputs.py nbtk/*.ipynb
 ```
 
-Clear notebook execution state before committing with `python tools/strip_notebook_outputs.py nbtk/*.ipynb`.
+Do not commit generated NetCDF grids, GMT temporary files, credentials, or
+restricted data.
 
-Pull requests that change interpolation settings should report the GMT version, grid interval, Poisson ratio, eigenvalue cutoff, and the resulting figure or summary statistic.
+## Releases
+
+Maintainers synchronize the package version, citation file, and changelog,
+merge only green changes, then tag `vX.Y.Z`. GitHub Actions builds the wheel
+and source distribution and attaches both to the release.
