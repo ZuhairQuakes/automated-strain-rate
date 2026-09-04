@@ -4,6 +4,10 @@ Automated Strain Rate estimates infinitesimal two-dimensional crustal strain
 from an interpolated horizontal GNSS velocity field. It does not establish a
 tectonic mechanism or quantify earthquake probability.
 
+The optional anomaly and earthquake-association experiment is isolated from
+this numerical core and documented in
+[`EXPERIMENTAL_ANOMALY_EXPLORER.md`](EXPERIMENTAL_ANOMALY_EXPLORER.md).
+
 ## Coordinate approximation
 
 Longitude and latitude are mapped to a local equirectangular frame at the mean

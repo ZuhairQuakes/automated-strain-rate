@@ -6,7 +6,7 @@ software are welcome.
 ## Development workflow
 
 1. Fork the repository and create a focused branch.
-2. Create the Conda environment or install `.[dev,notebook]`.
+2. Create the Conda environment or install `.[dev,investigation,notebook]`.
 3. Add tests for numerical or behavioural changes.
 4. Run `ruff check .`, `pytest`, `python tools/validate_repository.py`, and
    `python -m build`.

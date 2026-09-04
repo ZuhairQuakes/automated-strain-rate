@@ -1,5 +1,7 @@
 include CHANGELOG.md
 include CITATION.cff
+include EXPERIMENTAL_ANOMALY_EXPLORER.md
 include LICENSE
 include SCIENTIFIC_METHOD.md
 include README.md
+recursive-include examples *.py

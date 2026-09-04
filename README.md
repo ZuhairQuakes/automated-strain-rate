@@ -28,6 +28,41 @@ core derives strain tensors from regular velocity grids; an optional GMT
 Read [`SCIENTIFIC_METHOD.md`](SCIENTIFIC_METHOD.md) before interpreting results.
 This is research software, not an operational hazard assessment.
 
+## Experimental: strain anomaly + earthquake explorer
+
+An isolated research module now detects coherent high-`tensor_magnitude`
+regions directly from the numerical NetCDF field, overlays a validated local or
+cached USGS earthquake catalogue, and produces **candidate regions for expert
+investigation**. It does not modify the validated strain-rate calculation.
+
+```bash
+python -m pip install -e ".[investigation]"
+strain-rate investigate outputs/grid-03/strain-rate.nc outputs/investigation \
+  --variable tensor_magnitude \
+  --percentile 95 \
+  --earthquakes earthquakes.csv \
+  --buffer-km 50 \
+  --sensitivity-percentiles 90 95 97.5 99
+```
+
+The command writes a candidate-zone CSV, raster-footprint GeoJSON, map,
+diagnostic plot, processing metadata, and sensitivity summary. Read the complete
+method, assumptions, USGS option, output schema, validation, and limitations in
+[`EXPERIMENTAL_ANOMALY_EXPLORER.md`](EXPERIMENTAL_ANOMALY_EXPLORER.md).
+
+A deterministic demonstration is included:
+
+```bash
+python examples/create_synthetic_investigation.py
+strain-rate investigate outputs/synthetic-input/strain-rate.nc \
+  outputs/synthetic-investigation \
+  --earthquakes outputs/synthetic-input/earthquakes.csv
+```
+
+**Spatial coincidence between high strain rate and earthquakes does not
+demonstrate causality and this tool does not provide earthquake forecasts or
+operational hazard assessments.**
+
 ## Install
 
 ```bash
@@ -111,10 +146,11 @@ study. See [`data/Readme.md`](data/Readme.md).
 
 | Path | Purpose |
 | --- | --- |
-| [`src/automated_strain_rate/`](src/automated_strain_rate/) | tested library, GMT adapter, I/O, and CLI |
+| [`src/automated_strain_rate/`](src/automated_strain_rate/) | tested core plus isolated experimental anomaly and association modules |
 | [`tests/`](tests/) | analytical, I/O, GMT-command, and CLI tests |
 | [`nbtk/strain_rates_compute.ipynb`](nbtk/strain_rates_compute.ipynb) | historical exploratory workflow |
 | [`SCIENTIFIC_METHOD.md`](SCIENTIFIC_METHOD.md) | equations, conventions, assumptions, and limitations |
+| [`EXPERIMENTAL_ANOMALY_EXPLORER.md`](EXPERIMENTAL_ANOMALY_EXPLORER.md) | anomaly method, earthquake association, validation, and limitations |
 | [`data/`](data/) | example station velocity field and provenance guidance |
 | [`environment.yml`](environment.yml) | full Python, notebook, NetCDF, mapping, and GMT environment |
 

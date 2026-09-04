@@ -6,4 +6,4 @@ dependencies:
   - gmt>=6.5
   - pip
   - pip:
-      - -e ".[dev,notebook]"
+      - -e ".[dev,investigation,notebook]"

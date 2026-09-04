@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "automated-strain-rate"
-version = "0.1.0"
-description = "Reproducible strain-rate estimation from gridded GNSS velocities."
+version = "0.2.0"
+description = "Reproducible GNSS strain-rate estimation and experimental anomaly investigation."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -31,6 +31,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["build>=1.2,<2", "pytest>=8,<10", "ruff>=0.8,<1"]
+investigation = ["matplotlib>=3.8,<4", "pyproj>=3.6,<4"]
 notebook = ["cartopy>=0.23,<1", "jupyterlab>=4,<5", "matplotlib>=3.8,<4", "netcdf4>=1.7,<2"]
 
 [project.scripts]
