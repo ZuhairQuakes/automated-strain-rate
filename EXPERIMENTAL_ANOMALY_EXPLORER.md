@@ -131,6 +131,23 @@ strain-rate investigate outputs/grid-03/strain-rate.nc outputs/investigation \
   --minimum-magnitude 4.5
 ```
 
+## Interactive view
+
+After validating the analytical MVP, the same package can be explored through
+a lightweight Streamlit page:
+
+```bash
+python -m pip install -e ".[app]"
+streamlit run streamlit_app.py
+```
+
+The page uses the deterministic synthetic case by default. A researcher can
+upload a NetCDF field and earthquake CSV, adjust the anomaly parameters and
+geodesic association buffer, inspect region and earthquake details, compare the
+standard sensitivity thresholds, and download candidate-zone CSV, GeoJSON and
+processing metadata. The page calls the tested analysis modules directly; it
+does not segment screenshots or duplicate the numerical method in a frontend.
+
 Optional preprocessing is explicit, for example:
 
 ```bash
@@ -195,6 +212,8 @@ not be interpreted as a finding about Myanmar or any observed earthquake.
 - Coincidence can reflect shared tectonic structure, sampling, chance, or other
   confounding factors.
 - No null model or statistical significance test is included in this MVP.
+- Uploaded data remains in the active Streamlit process; deployments should set
+  appropriate file-size, retention, access-control, and privacy policies.
 
 **Spatial coincidence between high strain rate and earthquakes does not
 demonstrate causality and this tool does not provide earthquake forecasts or

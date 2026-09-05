@@ -59,6 +59,39 @@ strain-rate investigate outputs/synthetic-input/strain-rate.nc \
   --earthquakes outputs/synthetic-input/earthquakes.csv
 ```
 
+### Interactive web app
+
+The lightweight Streamlit explorer is a presentation layer over the same tested
+numerical modules. It starts with the deterministic demonstration and lets a
+researcher upload NetCDF and earthquake CSV files, change the threshold,
+smoothing, connectivity, minimum size, morphology and association buffer, then
+inspect an Esri World Imagery basemap without administrative boundaries, a
+transparent georeferenced strain overlay, Bird's PB2002 tectonic boundaries,
+candidate-zone table and 90/95/97.5/99% sensitivity response.
+
+```bash
+python -m pip install -e ".[app]"
+streamlit run streamlit_app.py
+```
+
+For Streamlit Community Cloud, use `streamlit_app.py` as the entry point;
+[`requirements.txt`](requirements.txt) installs the app dependencies. A
+container deployment is also supported:
+
+```bash
+docker build -t strain-anomaly-explorer .
+docker run --rm -p 8501:8501 strain-anomaly-explorer
+```
+
+The web interface performs segmentation on the uploaded numerical field, never
+on a rendered image. It does not add a hazard or earthquake-risk score.
+The basemap and tectonic overlay require an internet connection. The tectonic
+layer uses the [PB2002 plate-boundary model](https://doi.org/10.1029/2001GC000252)
+published by Bird (2003), delivered through the
+[Hugo Ahlenius/Nordpil GeoJSON conversion](https://github.com/fraxen/tectonicplates)
+under the Open Data Commons Attribution License. Esri World Imagery attribution
+is displayed on the map.
+
 **Spatial coincidence between high strain rate and earthquakes does not
 demonstrate causality and this tool does not provide earthquake forecasts or
 operational hazard assessments.**
@@ -153,6 +186,7 @@ study. See [`data/Readme.md`](data/Readme.md).
 | [`EXPERIMENTAL_ANOMALY_EXPLORER.md`](EXPERIMENTAL_ANOMALY_EXPLORER.md) | anomaly method, earthquake association, validation, and limitations |
 | [`data/`](data/) | example station velocity field and provenance guidance |
 | [`environment.yml`](environment.yml) | full Python, notebook, NetCDF, mapping, and GMT environment |
+| [`streamlit_app.py`](streamlit_app.py) | interactive candidate-region and sensitivity explorer |
 
 ## Contribute
 

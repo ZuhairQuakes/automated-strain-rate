@@ -4,4 +4,7 @@ include EXPERIMENTAL_ANOMALY_EXPLORER.md
 include LICENSE
 include SCIENTIFIC_METHOD.md
 include README.md
+include requirements.txt
+include streamlit_app.py
+include .streamlit/config.toml
 recursive-include examples *.py

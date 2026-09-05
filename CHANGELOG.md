@@ -2,6 +2,28 @@
 
 All notable changes are documented here following semantic versioning.
 
+## [0.3.0] - 2026-09-05
+
+### Added
+
+- Lightweight Streamlit explorer backed directly by the tested numerical
+  anomaly and earthquake-association modules.
+- Interactive NetCDF and earthquake-CSV upload, anomaly controls, candidate
+  maps and tables, sensitivity visualization, and downloadable CSV/GeoJSON
+  metadata.
+- Built-in deterministic demonstration, application smoke test, Streamlit Cloud
+  requirements, and container deployment.
+- Projected CARTO basemap, georeferenced transparent strain field, explicit
+  robust colour limits, earthquake date/magnitude labels, and separate zone
+  symbology.
+- Unlabelled Esri World Imagery replaces the administrative basemap, with a
+  cited Bird (2003) PB2002 plate-boundary overlay for tectonic context.
+
+### Scientific scope
+
+- The interface remains an exploratory expert-review tool and never calculates
+  a hazard probability or segments a rendered strain map.
+
 ## [0.2.0] - 2026-09-04
 
 ### Added
