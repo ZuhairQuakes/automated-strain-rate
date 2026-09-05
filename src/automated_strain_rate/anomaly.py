@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -204,12 +205,18 @@ def geographic_bounds(grid: AnalysisGrid) -> tuple[float, float, float, float]:
     )
 
 
-def _cell_areas_km2(longitude: np.ndarray, latitude: np.ndarray) -> np.ndarray:
+@lru_cache(maxsize=16)
+def _cached_cell_areas_km2(
+    longitude_values: tuple[float, ...],
+    latitude_values: tuple[float, ...],
+) -> np.ndarray:
     try:
         from pyproj import Geod
     except ImportError as exc:  # pragma: no cover - exercised by installation guidance
         message = "Install the investigation extra: pip install '.[investigation]'"
         raise RuntimeError(message) from exc
+    longitude = np.asarray(longitude_values)
+    latitude = np.asarray(latitude_values)
     geod = Geod(ellps="WGS84")
     lon_edges = _cell_edges(longitude)
     lat_edges = _cell_edges(latitude)
@@ -225,10 +232,19 @@ def _cell_areas_km2(longitude: np.ndarray, latitude: np.ndarray) -> np.ndarray:
     return areas
 
 
+def _cell_areas_km2(longitude: np.ndarray, latitude: np.ndarray) -> np.ndarray:
+    return _cached_cell_areas_km2(
+        tuple(float(value) for value in longitude),
+        tuple(float(value) for value in latitude),
+    ).copy()
+
+
 def _region_statistics(
     labels: np.ndarray,
     grid: AnalysisGrid,
 ) -> tuple[CandidateRegion, ...]:
+    if not np.any(labels):
+        return ()
     values = grid.processed[grid.valid_mask]
     lon_edges = _cell_edges(grid.longitude)
     lat_edges = _cell_edges(grid.latitude)
