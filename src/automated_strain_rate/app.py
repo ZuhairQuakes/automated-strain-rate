@@ -334,7 +334,12 @@ def _header() -> None:
 
 
 def run() -> None:
-    st.set_page_config(page_title="Strain Anomaly Explorer", page_icon="🧭", layout="wide")
+    st.set_page_config(
+        page_title="Strain Anomaly Explorer",
+        page_icon="🧭",
+        layout="wide",
+        initial_sidebar_state="collapsed",
+    )
     st.markdown(
         """
         <style>
