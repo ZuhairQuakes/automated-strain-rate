@@ -8,3 +8,4 @@ include requirements.txt
 include streamlit_app.py
 include .streamlit/config.toml
 recursive-include examples *.py
+recursive-include docs *.html *.css *.js

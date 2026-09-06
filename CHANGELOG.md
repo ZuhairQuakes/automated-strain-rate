@@ -2,6 +2,22 @@
 
 All notable changes are documented here following semantic versioning.
 
+## [0.3.1] - 2026-09-06
+
+### Added
+
+- Browser-only GitHub Pages explorer for the reproducible synthetic result set,
+  with satellite imagery, numerical strain, PB2002 tectonic boundaries,
+  candidate-region popups, earthquake magnitude/date labels, layer controls,
+  and magnitude filtering.
+- Reproducible static-data builder and automated GitHub Pages deployment.
+- Installed `strain-rate-app` launcher and tagged-release distribution workflow.
+
+### Changed
+
+- The main application starts with its parameter sidebar collapsed and the
+  direct Streamlit entry point supports fresh source-layout checkouts.
+
 ## [0.3.0] - 2026-09-05
 
 ### Added

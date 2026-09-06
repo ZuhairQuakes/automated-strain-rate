@@ -1,6 +1,7 @@
 # Automated Strain Rate
 
 [![Quality](https://github.com/ZuhairQuakes/automated-strain-rate/actions/workflows/repository-quality.yml/badge.svg)](https://github.com/ZuhairQuakes/automated-strain-rate/actions/workflows/repository-quality.yml)
+[![Static explorer](https://github.com/ZuhairQuakes/automated-strain-rate/actions/workflows/pages.yml/badge.svg)](https://zuhairquakes.github.io/automated-strain-rate/)
 [![MIT licence](https://img.shields.io/badge/licence-MIT-2ea44f.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776ab.svg)](https://www.python.org/downloads/)
 
@@ -9,7 +10,9 @@ reproducible two-dimensional crustal strain-rate fields. The tested numerical
 core derives strain tensors from regular velocity grids; an optional GMT
 `gpsgridder` pipeline automates interpolation from station observations.
 
-![Myanmar grid-resolution comparison](images/mynamar.png)
+[![Interactive strain anomaly explorer](images/strain-anomaly-explorer.png)](https://zuhairquakes.github.io/automated-strain-rate/)
+
+**[Explore the browser-only interactive map →](https://zuhairquakes.github.io/automated-strain-rate/)**
 
 ## Capabilities
 
@@ -61,6 +64,16 @@ strain-rate investigate outputs/synthetic-input/strain-rate.nc \
 
 ### Interactive web app
 
+The project offers two complementary interfaces:
+
+- The [static results explorer](https://zuhairquakes.github.io/automated-strain-rate/)
+  opens immediately in a browser and presents the reproducible example result
+  set without a Python server. It supports pan/zoom, layer visibility,
+  candidate-region popups, earthquake magnitude filtering, and magnitude/date
+  labels.
+- The Streamlit application performs interactive analysis of uploaded data and
+  exposes the scientific parameters described below.
+
 The lightweight Streamlit explorer is a presentation layer over the same tested
 numerical modules. It starts with the deterministic demonstration and lets a
 researcher upload NetCDF and earthquake CSV files, change the threshold,
@@ -71,7 +84,7 @@ candidate-zone table and 90/95/97.5/99% sensitivity response.
 
 ```bash
 python -m pip install -e ".[app]"
-streamlit run streamlit_app.py
+strain-rate-app
 ```
 
 For Streamlit Community Cloud, use `streamlit_app.py` as the entry point;
@@ -104,6 +117,13 @@ cd automated-strain-rate
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install .
+```
+
+To install the complete command-line and web software directly from GitHub:
+
+```bash
+python -m pip install "automated-strain-rate[app] @ git+https://github.com/ZuhairQuakes/automated-strain-rate.git"
+strain-rate-app
 ```
 
 Python 3.10 or newer is required. GMT is only required for the end-to-end
@@ -187,6 +207,8 @@ study. See [`data/Readme.md`](data/Readme.md).
 | [`data/`](data/) | example station velocity field and provenance guidance |
 | [`environment.yml`](environment.yml) | full Python, notebook, NetCDF, mapping, and GMT environment |
 | [`streamlit_app.py`](streamlit_app.py) | interactive candidate-region and sensitivity explorer |
+| [`docs/`](docs/) | browser-only results explorer published with GitHub Pages |
+| [`tools/build_static_demo.py`](tools/build_static_demo.py) | reproducibly exports the static example from the tested numerical modules |
 
 ## Contribute
 
@@ -195,6 +217,7 @@ python -m pip install -e ".[dev,notebook]"
 ruff check .
 pytest
 python tools/validate_repository.py
+PYTHONPATH=src python tools/build_static_demo.py
 python -m build
 ```
 
