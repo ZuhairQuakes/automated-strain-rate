@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Interactive map of reproducible automated strain-rate example results.">
+    <title>Automated Strain-Rate Explorer</title>
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynh17NfMwiRupgTG2ZB2jQwMZ7vM=" crossorigin="">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">AUTOMATED STRAIN RATE · STATIC RESULTS VIEWER</p>
+        <h1>Myanmar strain anomaly explorer</h1>
+        <p class="subtitle">Precomputed numerical strain, candidate regions, earthquakes, and PB2002 tectonic boundaries.</p>
+      </div>
+      <a class="source-link" href="https://github.com/ZuhairQuakes/automated-strain-rate">Source code</a>
+    </header>
+
+    <main>
+      <section class="map-shell" aria-label="Interactive strain-rate results">
+        <div id="map" role="application" aria-label="Interactive map of synthetic strain-rate results in Myanmar"></div>
+
+        <aside class="map-controls" aria-label="Map filters">
+          <label for="magnitude-filter">Minimum earthquake magnitude <output id="magnitude-value">4.5</output></label>
+          <input id="magnitude-filter" type="range" min="4.5" max="6.2" value="4.5" step="0.1">
+          <button id="reset-view" type="button">Reset map</button>
+        </aside>
+
+        <div class="legend" aria-label="Strain-rate legend">
+          <span>Tensor magnitude</span>
+          <div class="legend-ramp" aria-hidden="true"></div>
+          <div class="legend-labels"><span id="legend-min"></span><span id="legend-max"></span></div>
+          <small>microstrain/yr</small>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Demonstration data are synthetic and support software validation only. Candidate regions are not forecasts or operational hazard assessments.
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="data/demo-results.js"></script>
+    <script src="data/pb2002-myanmar.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
