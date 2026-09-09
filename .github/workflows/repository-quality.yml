@@ -33,3 +33,4 @@ jobs:
         run: |
           python -m pip install --no-deps --force-reinstall dist/*.whl
           strain-rate --help
+          strain-rate-app --help

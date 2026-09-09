@@ -27,13 +27,19 @@ REQUIRED_PROJECT_FILES = {
     "CITATION.cff",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
+    "Dockerfile",
     "EXPERIMENTAL_ANOMALY_EXPLORER.md",
     "LICENSE",
     "README.md",
+    "requirements.txt",
     "SCIENTIFIC_METHOD.md",
     "SECURITY.md",
     "SUPPORT.md",
     "pyproject.toml",
+    "streamlit_app.py",
+    "docs/app.js",
+    "docs/index.html",
+    "docs/styles.css",
 }
 
 
@@ -96,8 +102,8 @@ def validate_project_structure(errors: list[str]) -> None:
     package_init = ROOT / "src/automated_strain_rate/__init__.py"
     if not package_init.is_file():
         errors.append("missing Python package: src/automated_strain_rate")
-    elif '__version__ = "0.2.0"' not in package_init.read_text(encoding="utf-8"):
-        errors.append("package version is not synchronized with the 0.2.0 release")
+    elif '__version__ = "0.3.1"' not in package_init.read_text(encoding="utf-8"):
+        errors.append("package version is not synchronized with the 0.3.1 release")
 
 
 def main() -> int:
