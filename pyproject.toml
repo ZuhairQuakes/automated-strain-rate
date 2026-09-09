@@ -31,14 +31,14 @@ dependencies = [
 
 [project.optional-dependencies]
 app = [
-  "h5netcdf>=1.3,<2",
+  "h5netcdf[h5py]>=1.3,<2",
   "plotly>=6,<7",
   "pyproj>=3.6,<4",
   "streamlit>=1.42,<2",
 ]
 dev = ["build>=1.2,<2", "pytest>=8,<10", "ruff>=0.8,<1"]
 investigation = ["matplotlib>=3.8,<4", "pyproj>=3.6,<4"]
-notebook = ["cartopy>=0.23,<1", "h5netcdf>=1.3,<2", "jupyterlab>=4,<5", "matplotlib>=3.8,<4"]
+notebook = ["cartopy>=0.23,<1", "h5netcdf[h5py]>=1.3,<2", "jupyterlab>=4,<5", "matplotlib>=3.8,<4"]
 
 [project.scripts]
 strain-rate = "automated_strain_rate.cli:main"
